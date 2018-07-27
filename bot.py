@@ -20,17 +20,14 @@ games={}
 
 client1=os.environ['database']
 client=MongoClient(client1)
-db=client.god
+db=client.warofwilds
 user=db.users
-token=db.tokens
-mob=db.mobs
+
 
 def medit(message_text,chat_id, message_id,reply_markup=None,parse_mode='Markdown'):
     return bot.edit_message_text(chat_id=chat_id,message_id=message_id,text=message_text,reply_markup=reply_markup,
                                  parse_mode=parse_mode)
 
-
-те боту /start!')
     
     
 @bot.message_handler(commands=['start'])
@@ -41,21 +38,7 @@ def start(m):
                          'name':m.from_user.first_name,
                          'win':0,
                          'loose':0,
-                         'games':0,
-                         'red':0,
-                         'blue':0,
-                         'yellow':0,
-                         'agent':0,
-                         'killer':0,
-                         'glavar':0,
-                         'prohojii':0,
-                         'primanka':0,
-                         'mirotvorets':0,
-                         'gangster':0,
-                         'podrivnik':0,
-                         'redprimanka':0,
-                         'telohranitel':0,
-                         'alive':0
+                         'games':0
                         })
         print('Юзер создал аккаунт! Его имя: '+m.from_user.first_name)
     x=m.text.split('/start')
@@ -253,7 +236,27 @@ def forcem(m):
         
 
 def xod(game):
-    pass
+    hunter=0
+    i=0
+    hunters=['wolf']
+    animals=['deer','wolf']
+    x=len(game['players'])
+    for ids in game['players']:
+        i+=1
+        if i==x and hunter==0:
+            game['players'][ids]['role']=random.choice(hunters)
+        else:
+            role=random.choice(animals)
+            game['players'][ids]['role']=role
+            if role in hunters:
+                hunter=1
+    kb=types.InlineKeyboardMarkup()
+    kb.add(types.InlineKeyboardButton(text='f', callback_data='f')
+    bot.send_message(game['id'],'Выбирайте, куда сходить.', reply_markup=kb)
+    
+    
+    
+    
         
 @bot.callback_query_handler(func=lambda call:True)
 def inline(call):
@@ -280,25 +283,7 @@ def createuser(id, name):
         'role':None,
         'name':name,
         'id':id,
-        'number':None,
-        'text':'',
-        'shuffle':0,
-        'target':None,
-        'target2':None,
-        'killed':0,
-        'cankill':0,
-        'defence':0,
-        'killany':None,
-        'killany2':None,
-        'candef':0,
-        'blue':0,
-        'red':0,
-        'yellow':0,
-        'win':0,
-        'golos':1,
-        'message':0,
-        'picks':2,
-        'killedby':[]
+        'number':None
     }
           }
     
